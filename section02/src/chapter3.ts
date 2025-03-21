@@ -12,4 +12,3 @@ let config: {
 } = {
     apiKey: "API KEY",
 };
-
