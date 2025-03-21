@@ -55,4 +55,4 @@ let intersection1: Intersection = {
     name: "",
     color: "",
     language: "",
-}
+};
