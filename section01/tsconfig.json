@@ -1,0 +1,21 @@
+{
+  /* include (tsc src/index.ts)
+     src/ 경로에 있는 모든 ts 파일을 컴파일 해라 */
+  "include": ["src"],
+  /*
+  TypeScript를 JavaScript로 컴파일 할 때 설정하는 옵션
+  */
+  "compilerOptions": {
+    "target": "ESNext",     // ts -> js
+    "module": "ESNext",     // ts -> js
+    "outDir": "dist",       // 컴파일 된 js 파일이 저장되는 경로
+    "moduleResolution": "node",
+    "strict": false,         // 타입 검사를 엄격히 진행 -> ts는 자동으로 변수의 타입을 지정하는데, 매개변수 같은 경우는 자동으로 타입을 지정할 수 없다.
+    // 하나의 파일을 독립된 모듈로 바라볼 수 있게 할 수 있게 해줌
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+  },
+  "ts-node": {
+    "esm": true
+  },
+}
