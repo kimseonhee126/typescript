@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// 매개변수 props로 받는 타입을 지정하지 않았기 때문에
 interface Props {
     onClickAdd: (text: string) => void;
 }
