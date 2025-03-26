@@ -1,24 +1,67 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useReducer, useContext } from "react";
 import Editor from "./components/Editor";
 import "./App.css";
+import TodoItem from "./components/TodoItem";
+import { Todo } from "./types";
 
-interface Todo {
-  id: number;
-  content: string;
+type Action =
+  | {
+      type: "CREATE";
+      data: {
+        id: number;
+        content: string;
+      };
+    }
+  | {
+      type: "DELETE";
+      id: number;
+    };
+
+function reducer(state: Todo[], action: Action) {
+  switch (action.type) {
+    case "CREATE": {
+      return [...state, action.data];
+    }
+
+    case "DELETE": {
+      return state.filter((item) => item.id !== action.id);
+    }
+  }
+}
+
+export const TodoStateContext = React.createContext<Todo[] | null>(null);
+export const TodoDispatchContext = React.createContext<{
+  onClickAdd: (text: string) => void;
+  onClickDelete: (id: number) => void;
+} | null>(null);
+
+// TodoDispatchContext 가 null 일 가능성도 있으므로 null 이면 에러를 반환할 수 있도록 useTodoDispatch 함수 생성
+export function useTodoDispatch() {
+  const dispatch = useContext(TodoDispatchContext);
+
+  if (!dispatch) throw new Error("TodoDispatchContext에 문제가 있다");
+  return dispatch;
 }
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, dispatch] = useReducer(reducer, []);
   const idRef = useRef(0);
 
   const onClickAdd = (text: string) => {
-    setTodos([
-      ...todos,
-      {
+    dispatch({
+      type: "CREATE",
+      data: {
         id: idRef.current++,
         content: text,
       },
-    ]);
+    });
+  };
+
+  const onClickDelete = (id: number) => {
+    dispatch({
+      type: "DELETE",
+      id: id,
+    });
   };
 
   useEffect(() => {
@@ -28,7 +71,20 @@ function App() {
   return (
     <div className="App">
       <h1>Todo</h1>
-      <Editor onClickAdd={onClickAdd} />
+      <TodoStateContext.Provider value={todos}>
+        <TodoDispatchContext.Provider value={{
+          onClickAdd,
+          onClickDelete,
+        }}>
+          <Editor />
+
+          <div>
+            {todos.map((todo) => (
+              <TodoItem key={todo.id} {...todo} />
+            ))}
+          </div>
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   );
 }
