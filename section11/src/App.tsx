@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useReducer, useContext } from "react";
+import React, { useRef, useEffect, useReducer, useContext } from "react";
 import Editor from "./components/Editor";
 import "./App.css";
 import TodoItem from "./components/TodoItem";

@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import { TodoDispatchContext } from "../App";
+import { useState } from "react";
 import { useTodoDispatch } from "../App";
 
 // 매개변수 props로 받는 타입을 지정하지 않았기 때문에
